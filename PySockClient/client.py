@@ -8,10 +8,12 @@ import sys
 class ClientSocket(object):
     """Simple TCP Socket handler"""
     
-    def __init__(self, sock=None):
+    def __init__(self, host, port, sock=None):
+        self.alive = False
+        self.host = host
+        self.port = port
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.alive = True
         else:
             sock = sock
 
@@ -19,9 +21,9 @@ class ClientSocket(object):
         self.alive = False
         print("[Socket] Connection closed!")
 
-    def connect(self, host, port):
+    def connect(self):
         try:
-            self.sock.connect((host, port))
+            self.sock.connect((self.host, self.port))
             decodeThread == threading.thread(target = decode, args = (self))
         except:
             self.alive = False
