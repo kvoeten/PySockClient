@@ -25,7 +25,7 @@ while True:
     if (client.alive == False):
         client.connect()
 
-    # Continuously scan for serial ports connected
+    # Scan for serial ports
     ports = getPorts()
 
     # Purge dead ones
