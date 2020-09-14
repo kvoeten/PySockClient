@@ -8,7 +8,9 @@ handlers = {
 
 class PacketProcessor():
     def processPacket(client, packet):
-        opcode = packet.decodeShort()
+        packet.reset()
+        opcode = packet.decodeUShort()
+        print("[Client] InPacket (", opcode, ") ", packet.get())
         handlers.get(opcode).process(client, packet)
 
     def handshake(client):

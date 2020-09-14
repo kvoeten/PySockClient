@@ -6,8 +6,7 @@ import sys
 import time
 
 Packet.test()
-
-client = ClientSocket("localhost", 8888)
+client = None
 BAUDRATE = 9600
 TIMEOUT = 0 
 
@@ -22,7 +21,8 @@ def getPorts():
 
 while True:
     # Check client alive, try connect if not
-    if (client.alive == False):
+    if (not client or client.alive == False):
+        client = ClientSocket("localhost", 8888)
         client.connect()
 
     # Scan for serial ports

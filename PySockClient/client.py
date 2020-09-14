@@ -1,6 +1,7 @@
 from packet import Packet
 from processor import PacketProcessor
-import threading
+from threading import Thread
+import _thread
 import socket
 import struct
 import sys
@@ -19,33 +20,39 @@ class ClientSocket(object):
             sock = sock
 
     def disconnect(self):
-        self.alive = False
         print("[Socket] Connection closed!")
+        self.alive = False
 
     def connect(self):
         try:
             self.sock.connect((self.host, self.port))
-            #decodeThread == threading.thread(target = decode, args = (self))
             self.alive = True
-        except:
+            _thread.start_new_thread(ClientSocket.decode ,(self,))
+        except NameError as err:
+            print("[Socket] Unable to connect to server at " + self.host + ":" + str(self.port) + ". Err: ", err)
             self.alive = False
-            print("[Socket] Unable to connect to server at " + self.host + ":" + self.port + ".")
 
     def decode(self):
-        while alive:
+        print("[Socket] Connected to server at " + self.host + ":" + str(self.port) + ".")
+        while self.alive:
             try:
-                length = struct.unpack('<h', self.sock.receive(2))
-                print("[Socket] Awaiting packet of length: " + length)
-                PacketProcessor.processPacket(Packet(self.sock.receive(length)))
-            except:
-                disconnect(self)
+                length = struct.unpack('<H', self.sock.recv(2))[0]
+                print("[Socket] Received packet of length: " + str(length))
+                PacketProcessor.processPacket(self, Packet(self.sock.recv(length)))
+            except Exception as e:
+                print("[Socket] Decoder exception: ", e)
+                self.alive = False
+        self.disconnect()
 
     def encode(self, packet):
         try:
             data = packet.getData()
-            length = struct.pack('<h', len(data))
-            self.sock.sendall(length + data)
-            print("[Socket] Sent packet of length: " + length)
-        except:
-            disconnect(self)
+            outBuffer = Packet()
+            outBuffer.encodeUShort(struct.pack('<H', len(data))[0])
+            outBuffer.buff.write(data)
+            self.sock.sendall(outBuffer.getData())
+            print("[Socket] Sent packet ", outBuffer.get())
+        except Exception as e:
+            print("[Socket] Encoder exception: ", e)
+            self.disconnect()
 

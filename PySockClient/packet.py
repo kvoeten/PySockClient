@@ -1,13 +1,12 @@
 import io
+import sys
 import struct
 
 class Packet(object):
     """Little Endian byte buffer"""
 
-    def __init__(self, data):
+    def __init__(self, data=None):
         self.buff = io.BytesIO()
-        self.writerIndex = 0
-        self.readerIndex = 0
         if data:
             self.buff.write(data)
         
@@ -19,6 +18,14 @@ class Packet(object):
 
     def release(self):
         self.buff.close()
+
+    def print(self):
+        print("[Packet] " + self.get())
+
+    def get(self):
+        hex = self.buff.getvalue().hex().upper()
+        hex = " ".join(hex[i:i+2] for i in range(0, len(hex), 2))
+        return hex
     
     # Encoders
     def decodeChar(self):
@@ -64,7 +71,7 @@ class Packet(object):
     def encodeUByte(self, value):
         self.buff.write(struct.pack('<B', value))
 
-    def encodeeShort(self, value):
+    def encodeShort(self, value):
         self.buff.write(struct.pack('<h', value))
 
     def encodeUShort(self, value):
@@ -90,12 +97,14 @@ class Packet(object):
 
     def test():
         packet = Packet(b'\x00')
+        packet.encodeUShort(2)
         packet.encodeInt(4)
         packet.encodeFloat(1.2)
         packet.reset()
         assert packet.decodeByte() == 0, "Should be 0"
+        assert packet.decodeUShort() == 2, "Should be 2"
         assert packet.decodeInt() == 4, "Should be 4"
         assert packet.decodeFloat() < 2, "Should be <1.2"
-        assert len(packet.getData()) == 9, "Should be 9"
+        assert len(packet.getData()) == 11, "Should be 9"
         print("[Packet] All Tests Passed")
 
