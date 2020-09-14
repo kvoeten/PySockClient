@@ -7,7 +7,7 @@ import time
 
 Packet.test()
 
-client = ClientSocket("127.0.0.1", "8888")
+client = ClientSocket("localhost", 8888)
 BAUDRATE = 9600
 TIMEOUT = 0 
 

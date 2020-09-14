@@ -12,6 +12,7 @@ class ClientSocket(object):
         self.alive = False
         self.host = host
         self.port = port
+        self.uid = 0x01
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
@@ -24,10 +25,11 @@ class ClientSocket(object):
     def connect(self):
         try:
             self.sock.connect((self.host, self.port))
-            decodeThread == threading.thread(target = decode, args = (self))
+            #decodeThread == threading.thread(target = decode, args = (self))
+            self.alive = True
         except:
             self.alive = False
-            print("[Socket] Unable to connect to server!")
+            print("[Socket] Unable to connect to server at " + self.host + ":" + self.port + ".")
 
     def decode(self):
         while alive:

@@ -9,7 +9,6 @@ class Packet(object):
         self.writerIndex = 0
         self.readerIndex = 0
         if data:
-            self.writerIndex = len(data)
             self.buff.write(data)
         
     def getData(self):
