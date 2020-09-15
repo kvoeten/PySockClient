@@ -9,9 +9,9 @@
 
 class ByteBuf {
   public:
-    int size();
     void clear();
-    uint8_t* makePacket();
+    uint16_t size();
+    uint8_t* buffer();
     
     // Write
     void write(void* data, uint8_t len);
@@ -28,7 +28,7 @@ class ByteBuf {
     uint64_t readLong();
   private:
     uint8_t byteBuff[1024];
-    int readerIndex = 0, writerIndex = 0;
-    int recvLength = -1;
+    uint16_t readerIndex = 0, writerIndex = 0;
+    uint16_t recvLength = -1;
 };
 #endif

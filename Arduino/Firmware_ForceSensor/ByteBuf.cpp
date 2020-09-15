@@ -5,17 +5,13 @@ void ByteBuf::clear() {
   writerIndex = 0;
 }
 
-int ByteBuf::size() {
+uint16_t ByteBuf::size() {
   return writerIndex;
 }
 
 // Copies data into new object so buffer can be used again.
-uint8_t* ByteBuf::makePacket() {
-  uint16_t length = writerIndex;
-  uint8_t data[length + 2];
-  memcpy(&data[0], &length, 2);
-  memcpy(&data[2], &byteBuff[0], length);
-  return data;
+uint8_t* ByteBuf::buffer() {
+  return &byteBuff[0];
 }
 
 /*
