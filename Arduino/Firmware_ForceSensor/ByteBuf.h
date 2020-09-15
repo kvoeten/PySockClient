@@ -1,7 +1,6 @@
 /*
   Bytebuf.h - Library for reading/writing a bytebuffer.
   Created by Kaz Voeten, September 15, 2020.
-  Released into the public domain.
 */
 #ifndef Bytebuf_h
 #define Bytebuf_h
@@ -10,6 +9,10 @@
 
 class ByteBuf {
   public:
+    int size();
+    void clear();
+    uint8_t* makePacket();
+    
     // Write
     void write(void* data, uint8_t len);
     void writeByte(uint8_t data);
