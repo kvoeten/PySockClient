@@ -1,6 +1,6 @@
-from packet import Packet
 from processor import PacketProcessor
 from threading import Thread
+from packet import Packet
 import _thread
 import socket
 import struct
@@ -28,8 +28,8 @@ class ClientSocket(object):
             self.sock.connect((self.host, self.port))
             self.alive = True
             _thread.start_new_thread(ClientSocket.decode ,(self,))
-        except NameError as err:
-            print("[Socket] Unable to connect to server at " + self.host + ":" + str(self.port) + ". Err: ", err)
+        except Exception as ex:
+            print("[Socket] Unable to connect to server at " + self.host + ":" + str(self.port) + ". Err: ", ex)
             self.alive = False
 
     def decode(self):
@@ -39,8 +39,8 @@ class ClientSocket(object):
                 length = struct.unpack('<H', self.sock.recv(2))[0]
                 print("[Socket] Received packet of length: " + str(length))
                 PacketProcessor.processPacket(self, Packet(self.sock.recv(length)))
-            except Exception as e:
-                print("[Socket] Decoder exception: ", e)
+            except Exception as ex:
+                print("[Socket] Decoder exception: ", ex)
                 self.alive = False
         self.disconnect()
 

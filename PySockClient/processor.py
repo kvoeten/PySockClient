@@ -1,17 +1,26 @@
 from enum import Enum
 from packet import Packet
 from handlers import ping
+from sensors import forceplane
 
 handlers = {
     0x01 : ping.Ping,
 }
 
+sensors = {
+    0x01 : forceplane.ForcePlane    
+}
+
 class PacketProcessor():
     def processPacket(client, packet):
-        packet.reset()
+        packet.reset() # Reset reader index
         opcode = packet.decodeUShort()
-        print("[Client] InPacket (", opcode, ") ", packet.get())
         handlers.get(opcode).process(client, packet)
+
+    def processSensor(sensor, packet):
+        packet.reset() # Reset reader index
+        sensor.type = packet.decodeUShort()
+        sensors.get(sensor.type).process(sensor, packet)
 
     def handshake(client):
         outpacket = Packet()

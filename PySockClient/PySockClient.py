@@ -1,5 +1,7 @@
 from packet import Packet
+from sensor import Sensor
 from client import ClientSocket
+import serial.tools.list_ports
 import glob
 import serial
 import sys
@@ -24,24 +26,16 @@ while True:
     if (not client or client.alive == False):
         client = ClientSocket("localhost", 8888)
         client.connect()
-
-    # Scan for serial ports
-    ports = getPorts()
-
-    # Purge dead ones
-    port_exceptions = ['dev/ttyprintk']
-    for port in port_exceptions:
-        if port in ports:
-            ports.remove(port)
-            print('[Serial] Removed %s.'%port)
-
-    # Scan again!
-    for port in ports:
-        try:
-            s = serial.Serial(port, 9600, timeout = TIMEOUT, rtscts = 0)
-            print('[Serial] Connected to %s.'%port)
-        except:
-            pass
+    else:
+        # Scan for serial ports
+        ports = list(serial.tools.list_ports.comports())
+        for port in ports:
+            if "Arduino" in port.description:
+                try:
+                    Sensor(client, port.device)
+                    print('[Serial] Connected to %s.'%port)
+                except Exception as e:
+                    print("[Sensor] Failed to connect to sensor: ", e)
     
     # Check connections again after 5 seconds
     time.sleep(5)

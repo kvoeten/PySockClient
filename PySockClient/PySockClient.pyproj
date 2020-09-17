@@ -34,9 +34,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PySockClient.py" />
+    <Compile Include="sensor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="sensors\forceplane.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="handlers\" />
+    <Folder Include="sensors\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
