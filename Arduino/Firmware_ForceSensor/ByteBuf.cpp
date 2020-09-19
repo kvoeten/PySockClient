@@ -9,7 +9,6 @@ uint16_t ByteBuf::size() {
   return writerIndex;
 }
 
-// Copies data into new object so buffer can be used again.
 uint8_t* ByteBuf::buffer() {
   return &byteBuff[0];
 }

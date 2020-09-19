@@ -30,7 +30,7 @@ while True:
         # Scan for serial ports
         ports = list(serial.tools.list_ports.comports())
         for port in ports:
-            if "Arduino" in port.description:
+            if "Arduino" or "Simly" in port.description:
                 try:
                     Sensor(client, port.device)
                     print('[Serial] Connected to %s.'%port)

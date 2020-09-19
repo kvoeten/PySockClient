@@ -55,4 +55,3 @@ class ClientSocket(object):
         except Exception as e:
             print("[Socket] Encoder exception: ", e)
             self.disconnect()
-
