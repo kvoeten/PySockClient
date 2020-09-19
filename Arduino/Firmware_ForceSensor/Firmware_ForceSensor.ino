@@ -7,8 +7,9 @@ ByteBuf outPacket;
 SoftwareSerial BTserial(2, 3); // RX | TX
 
 #define TYPE 0x01
+#define UID 0x01
 #define PROGRAMMING_MODE false
-#define SERIAL_UID "AT+NAMESimly FS-01 0001"
+#define NAME "AT+NAMESimly FS-01 0001"
 #define PIN "AT+PIN1234"
 #define pin_front A0
 #define pin_back A1
@@ -38,6 +39,7 @@ void loop() {
 
   // Write to serial ports
   outPacket.writeShort(TYPE);
+  outPacket.writeShort(UID);
   outPacket.writeInt(front);
   outPacket.writeInt(back);
   outPacket.writeInt(left);

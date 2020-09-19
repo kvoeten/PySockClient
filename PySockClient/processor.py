@@ -18,8 +18,24 @@ class PacketProcessor():
         handlers.get(opcode).process(client, packet)
 
     def processSensor(sensor, packet):
-        packet.reset() # Reset reader index
+        # Reset reader index
+        packet.reset() 
+
+        # Get sensor identifier
         sensor.type = packet.decodeUShort()
+        sensor.uid = packet.decodeUShort()
+
+        # Construct sensor identifier
+        key = str(sensor.type) + ":" + str(sensor.uid)
+        existing = sensor.client.sensors.get(key)
+
+        # Check if sensor is also connected over serial
+        if existing and sensor.bluetooth and not existing.bluetooth:
+            sensor.disconnect()
+        else:
+            sensor.client.sensors[key] = sensor
+
+        # Finally handle sensor
         sensors.get(sensor.type).process(sensor, packet)
 
     def handshake(client):

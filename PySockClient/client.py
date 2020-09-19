@@ -14,6 +14,7 @@ class ClientSocket(object):
         self.host = host
         self.port = port
         self.uid = 0x01
+        self.sensors = {}
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
