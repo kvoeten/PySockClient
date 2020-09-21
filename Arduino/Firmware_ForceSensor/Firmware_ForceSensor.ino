@@ -45,7 +45,7 @@ void loop() {
   outPacket.writeInt(left);
   outPacket.writeInt(right);
   sendPacket();
-  delay(100);
+  delay(25);
 #endif
 }
 

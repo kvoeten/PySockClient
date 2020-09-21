@@ -18,9 +18,11 @@ class Sensor(object):
         self.decode = -1
         if not bluetooth:
             self.serial = serial.Serial(port, 9600, timeout = 1, rtscts = 0)
+            self.sock = None
         else:
             self.sock = bl.BluetoothSocket(bl.RFCOMM)
             sock.connect((mac, port))
+            self.serial = None
             self.alive = True
         _thread.start_new_thread(Sensor.read ,(self,))
 
