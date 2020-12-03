@@ -170,7 +170,7 @@ void handleRotator() {
 
   // Check if desired count has been reached
   if ( (desiredCount > 0 && counter >= desiredCount) 
-  || (desiredCount < 0 && counter <= desiredCount){
+  || (desiredCount < 0 && counter <= desiredCount)){
     delay(20); // ensure previous data has been sent    
     desiredCount = 0, counter = 0;
     // Send status packet (0 means no dial change)

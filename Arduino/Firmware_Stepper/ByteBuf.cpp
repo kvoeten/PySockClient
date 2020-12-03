@@ -17,7 +17,7 @@ void ByteBuf::setWriterIndex(uint16_t index) {
   writerIndex = index;
 }
 
-void ByteBuf::setRreaderIndex(uint16_t index) {
+void ByteBuf::setReaderIndex(uint16_t index) {
   readerIndex = index;
 }
 
