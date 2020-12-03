@@ -25,7 +25,7 @@ def getPorts():
 while True:
     # Check client alive, try connect if not
     if (not client or client.alive == False):
-        client = ClientSocket("192.168.1.11", 8888)
+        client = ClientSocket("127.0.0.1", 8888)
         client.connect()
     else:
         # Scan for serial ports
@@ -50,7 +50,7 @@ while True:
                     # Construct sensor identifier
                     key = int(device[1][-4:])
                     if "FS-01" in device[1]:
-                        key = "1:" + uid;
+                        key = "1:" + key;
 
                     # Check if sensor is already connected
                     if client.sensors.get(key):

@@ -1,22 +1,26 @@
 from enum import Enum
 from packet import Packet
 from handlers import ping
-from sensors import forceplane
+from sensors import forceplane, rotator
 
 handlers = {
     0x01 : ping.Ping,
+    0x02 : rotator.Angle
 }
 
 sensors = {
-    0x01 : forceplane.ForcePlane    
+    0x01 : forceplane.ForcePlane,
+    0x02 : rotator.Rotation
 }
 
 class PacketProcessor():
+    # Process unreal requests
     def processPacket(client, packet):
         packet.reset() # Reset reader index
         opcode = packet.decodeUShort()
         handlers.get(opcode).process(client, packet)
 
+    # Process sensor data reports
     def processSensor(sensor, packet):
         # Reset reader index
         packet.reset() 
@@ -38,6 +42,7 @@ class PacketProcessor():
         # Finally handle sensor
         sensors.get(sensor.type).process(sensor, packet)
 
+    # Send hello to unreal
     def handshake(client):
         outpacket = Packet()
         outpacket.encodeUShort(0xF0)

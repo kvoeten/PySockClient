@@ -1,6 +1,7 @@
 from processor import PacketProcessor
 from threading import Thread
 from packet import Packet
+import bluetooth as bl
 import _thread
 import serial
 import struct
@@ -21,7 +22,7 @@ class Sensor(object):
             self.sock = None
         else:
             self.sock = bl.BluetoothSocket(bl.RFCOMM)
-            sock.connect((mac, port))
+            self.sock.connect((mac, port))
             self.serial = None
             self.alive = True
         _thread.start_new_thread(Sensor.read ,(self,))
