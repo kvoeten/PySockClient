@@ -38,7 +38,6 @@ class ClientSocket(object):
         while self.alive:
             try:
                 length = struct.unpack('<H', self.sock.recv(2))[0]
-                print("[Socket] Received packet of length: " + str(length))
                 PacketProcessor.processPacket(self, Packet(self.sock.recv(length)))
             except Exception as ex:
                 print("[Socket] Decoder exception: ", ex)

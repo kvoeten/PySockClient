@@ -8,7 +8,7 @@ ByteBuf inPacket;
 ByteBuf outPacket;
 int recvLen = -1;
 
-SoftwareSerial BTserial(2, 3); // RX | TX
+SoftwareSerial BTserial(7, 6); // RX | TX
 
 #define TYPE 0x02
 #define UID 0x02
@@ -148,8 +148,8 @@ void handleRotator() {
 
   // If state changes, send notification to unreal
   if (currentStateCLK != lastStateCLK  && currentStateCLK == 1){
-    outPacket.writeShort(TYPE);
-    outPacket.writeShort(UID);
+    outPacket.writeUShort(TYPE);
+    outPacket.writeUShort(UID);
 
     if (digitalRead(DT) != currentStateCLK) {
       // Clockwise

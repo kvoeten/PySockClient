@@ -24,11 +24,13 @@ class PacketProcessor():
     def processSensor(sensor, packet):
         # Reset reader index
         packet.reset() 
+        
+        print("[Sensor] Packet: " + packet.get())
 
         # Get sensor identifier
         sensor.type = packet.decodeUShort()
         sensor.uid = packet.decodeUShort()
-
+                    
         # Construct sensor identifier
         key = str(sensor.type) + ":" + str(sensor.uid)
         existing = sensor.client.sensors.get(key)

@@ -15,7 +15,7 @@ class Rotation():
         outpacket.encodeUShort(sensor.uid)
 
         # Encode angle and send to unreal
-        outpacket.encodeUInt(angle)
+        outpacket.encodeInt(angle)
         sensor.client.encode(outpacket)
 
 class Angle():

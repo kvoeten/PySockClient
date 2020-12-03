@@ -100,11 +100,14 @@ class Packet(object):
         packet.encodeUShort(2)
         packet.encodeInt(4)
         packet.encodeFloat(1.2)
+        packet.encodeInt(-4)
+        packet.encodeInt(-1)
         packet.reset()
         assert packet.decodeByte() == 0, "Should be 0"
         assert packet.decodeUShort() == 2, "Should be 2"
         assert packet.decodeInt() == 4, "Should be 4"
         assert packet.decodeFloat() < 2, "Should be <1.2"
-        assert len(packet.getData()) == 11, "Should be 9"
+        assert packet.decodeInt() == -4, "Should be -4"
+        assert packet.decodeInt() == -1, "Should be -1"
         print("[Packet] All Tests Passed")
 

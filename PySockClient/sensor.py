@@ -42,6 +42,7 @@ class Sensor(object):
                 try:
                     if self.decode is -1 and self.serial.in_waiting >= 2:
                         self.decode = struct.unpack('<H', self.serial.read(2))[0]
+                        print("[Sensor] Received packet of length: " + str(self.decode))
                     if self.decode is not -1 and self.serial.in_waiting >= self.decode:
                         PacketProcessor.processSensor(self, Packet(self.serial.read(self.decode)))
                         self.decode = -1

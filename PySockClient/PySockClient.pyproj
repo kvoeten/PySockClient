@@ -40,6 +40,9 @@
     <Compile Include="sensors\forceplane.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="sensors\rotator.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="handlers\" />
