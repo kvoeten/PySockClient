@@ -51,7 +51,6 @@ class ClientSocket(object):
             outBuffer.encodeUShort(struct.pack('<H', len(data))[0])
             outBuffer.buff.write(data)
             self.sock.sendall(outBuffer.getData())
-            print("[Socket] Sent packet ", outBuffer.get())
         except Exception as e:
             print("[Socket] Encoder exception: ", e)
             self.disconnect()

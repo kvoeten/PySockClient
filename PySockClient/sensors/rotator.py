@@ -22,21 +22,19 @@ class Angle():
     # Handle unreal request for rotation to a desired angle
     def process(client, inpacket):
         # Get sensor identifier and angle request
-        sensor.type = inpacket.decodeUShort()
-        sensor.uid = inpacket.decodeUShort()
+        type = inpacket.decodeUShort()
+        uid = inpacket.decodeUShort()
         angle = inpacket.decodeInt()
 
         # Construct sensor identifier
-        key = str(sensor.type) + ":" + str(sensor.uid)
-        existing = sensor.client.sensors.get(key)
+        key = str(type) + ":" + str(uid)
+        sensor = client.sensors.get(key)
 
-        # Check if sensor is also connected over serial
-        if existing and sensor.bluetooth and not existing.bluetooth:
-            sensor.disconnect()
+        if (sensor):
+            # Write desired angle to sensor (arduino)
+            outpacket = Packet()
+            outpacket.encodeInt(angle)
+            sensor.write(outpacket)
+            print("[Rotator] Requested angle: " + str(angle))
         else:
-            sensor.client.sensors[key] = sensor
-
-        # Write desired angle to sensor (arduino)
-        outpacket = Packet()
-        outpacket.encodeInt(angle)
-        sensor.write(outpacket)
+            print("[Rotator] Invalid sensor request: " + str(uid))

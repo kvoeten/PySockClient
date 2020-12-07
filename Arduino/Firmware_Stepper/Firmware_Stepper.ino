@@ -21,6 +21,11 @@ SoftwareSerial BTserial(7, 6); // RX | TX
 #define DT 3
 #define SW 4
 
+// Motor outputs
+#define IN1 7
+#define IN2 8
+#define EN1 9
+
 // State assignable by simulation
 int desiredCount = 0;
 
@@ -63,12 +68,26 @@ void setup() {
   delay(1000);
 
   // Set encoder pins as inputs
-  pinMode(CLK,INPUT);
-  pinMode(DT,INPUT);
+  pinMode(CLK, INPUT);
+  pinMode(DT, INPUT);
   pinMode(SW, INPUT_PULLUP);
   lastStateCLK = digitalRead(CLK);
 
+  // Set motor pins as outputs
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(EN1, OUTPUT);
+
+  desiredCount = 5;
+  motorRun(true);
+
   AFMS.begin();  // create with the default frequency 1.6KHz
+}
+
+void motorRun(bool right) {
+  analogWrite(EN1, 255);  // Max Speed    
+  digitalWrite(IN1, right ? HIGH : LOW);
+  digitalWrite(IN2, right ? LOW : HIGH);
 }
 
 void loop() {
@@ -131,7 +150,7 @@ void handlePacket() {
     myMotorL->setSpeed(255);
     myMotorL->run(RELEASE);
     myMotorL->run(FORWARD);
-  } else {
+  } else if (desiredCount < 0) {
     myMotorL->setSpeed(255);
     myMotorL->run(RELEASE);
     myMotorL->run(BACKWARD);
@@ -139,6 +158,7 @@ void handlePacket() {
 }
 
 void stopMotor() {
+  analogWrite(EN1, 0);
   myMotorL->setSpeed(0);
   myMotorL->run(RELEASE);
 }
@@ -178,6 +198,7 @@ void handleRotator() {
     outPacket.writeShort(UID);
     outPacket.writeInt(0);
     sendPacket();
+    stopMotor();
   }
 
   // Remember last CLK state
